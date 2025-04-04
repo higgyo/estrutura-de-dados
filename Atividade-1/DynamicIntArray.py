@@ -20,7 +20,7 @@ class DynamicIntArray:
     # get (faça validação de index fora dos limites.)
 
     def get(self, searched_index):
-        if searched_index >= self.size:
+        if searched_index < 0 or searched_index >= self.size:
             IndexError("Index fora dos limites")
 
         return self.data[searched_index]
@@ -31,7 +31,7 @@ class DynamicIntArray:
     # set (faça validação de index fora dos limites.)
 
     def set(self, index_to_set, new_value):
-        if index_to_set >= self.size:
+        if index_to_set < 0 or index_to_set >= self.size:
             IndexError("Index fora dos limites")
 
         self.data[index_to_set] = new_value
@@ -58,6 +58,21 @@ class DynamicIntArray:
         self.data = new_data
         self.capacity = new_capacity
 
+    def _resize_down_if_necessary(self):
+        
+        if self.size / self.capacity <= 0.25:
+            
+            new_capacity = self.capacity // 2
+
+            print(f"⏬ Redimensionando de {self.capacity} para {new_capacity}")
+            
+            new_data = [0] * new_capacity
+
+            for index in range(self.size):
+                new_data[index] = self.data[index]
+
+            self.data = new_data
+            self.capacity = new_capacity
 
 
     # remove_at
@@ -76,6 +91,16 @@ class DynamicIntArray:
 
     # Imprimir a seguinte mensagem quando for o caso: ⏬ Redimensionando de {self.capacity} para {new_capacity}
 
+    def remove_at(self, index_to_remove):
+        if index_to_remove < 0 or index_to_remove >= self.size:
+            IndexError("Index fora dos limites")
+
+        for index in range(index_to_remove, self.size):
+            self.data[index] = self.data[index + 1]
+
+        self.size -= 1
+
+        self._resize_down_if_necessary()
 
 
     # remove
@@ -85,24 +110,17 @@ class DynamicIntArray:
     # mesmas regras do remove_at.
 
     def remove(self, value_to_remove):
-        index_of_value = -1
+        removed = False
 
-        for index in self.size:
-            if self.data[index] == value_to_remove:
-                index_of_value = index
-                break
+        for index in range(self.size):
+            if self.data[index] == value_to_remove and not removed:
+                removed = True
+                self.size -= 1
+              
+            if removed:
+                self.data[index] = self.data[index + 1]
 
-        if index_of_value == -1:
-            return None
-        
-        temp = self.data[index_of_value:]
-
-        if len(temp) >= 2:
-            temp = temp[1:]
-
-        self.data = self.data[:index_of_value] + temp
-
-        self.size -= 1
+        self._resize_down_if_necessary()
 
     # insert_at
 
@@ -111,7 +129,20 @@ class DynamicIntArray:
     # respeitando as regras de aumento da lista.
 
     # def insert_at(self, index, value):
+    
+    def insert_at(self, index_to_insert, value_to_insert):
         
+        if index_to_insert < 0 or index_to_insert > self.size:
+            raise IndexError("Index fora dos limites")
+        
+        new_data = self.data[:index_to_insert] + [value_to_insert] + self.data[index_to_insert:]
+
+        self.data = new_data
+        self.size += 1
+
+        if self.size == self.capacity:
+            self._resize_up(self.capacity * 2)
+          
 
 
     # index_of
@@ -121,7 +152,7 @@ class DynamicIntArray:
     def index_of(self, searched_value):
 
         for index in range(self.size):
-            if(self.data[index] == searched_value):
+            if self.data[index] == searched_value:
                 return index
             
         return -1

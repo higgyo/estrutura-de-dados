@@ -152,8 +152,30 @@ print("Removendo mais um elementos no indice 0.")
 
 # Saída: Redimensionando de 4 para 2
 
-# Saída: [10]
+# Saída: [99] (corrigido, pois era o 10 que estava no indice 0)
 
 lista.remove_at(0)
+
+print("Lista: ", lista)
+
+print("\n\n---Testes criados para o insert_at---\n\n")
+
+print("Adicionando um elementos no indice 0.")
+
+# Saída: Redimensionando de 2 para 4
+
+# Saída: [20, 99]
+
+lista.insert_at(0, 20)
+
+print("Lista: ", lista)
+
+
+
+print("Adicionando mais um elementos no indice 1.")
+
+# Saída: [20, 30, 99]
+
+lista.insert_at(1, 30)
 
 print("Lista: ", lista)

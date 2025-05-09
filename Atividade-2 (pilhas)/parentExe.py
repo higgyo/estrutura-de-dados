@@ -30,6 +30,9 @@ def is_balanced(expression):
             else:
                 pilha.pop()
             
+    if not pilha.is_empty():
+        return False
+    
     return True
 
 
@@ -40,3 +43,4 @@ def is_balanced(expression):
 print(is_balanced("[{}(2+2)]{}")) #Esperado True
 print(is_balanced("[{}(2+2))]{}")) #Esperado False
 print(is_balanced("[{}])")) #Esperado False
+print(is_balanced("[{}")) #Esperado False

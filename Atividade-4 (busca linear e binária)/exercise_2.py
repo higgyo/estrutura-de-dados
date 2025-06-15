@@ -20,11 +20,11 @@ def calc_h_index_with_linear_search(array):
 
 print(f"O valor índice h é {calc_h_index_with_linear_search(array)}\n")
 
-# Encontrar a posição de um valor -- ou onde ele deve ser inserido -- usando *busca binária*
+# Calcular o índice h usando *busca binária*
 
 def calc_h_index_with_binary_search(array):
   n = len(array)
-  
+
   left, right = 0, n - 1
   h_index = 0
 
